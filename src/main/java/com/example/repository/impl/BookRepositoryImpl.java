@@ -3,8 +3,8 @@ package com.example.repository.impl;
 import com.example.exception.DataProcessingException;
 import com.example.model.Book;
 import com.example.repository.BookRepository;
-import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -49,11 +49,11 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public Book getById(Long id) {
+    public Optional<Book> getById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.find(Book.class, id);
+            return Optional.ofNullable(session.find(Book.class, id));
         } catch (Exception exception) {
-            throw new EntityNotFoundException("Can't get book by id: " + id);
+            throw new DataProcessingException("Can't get book by id: " + id, exception);
         }
     }
 }
