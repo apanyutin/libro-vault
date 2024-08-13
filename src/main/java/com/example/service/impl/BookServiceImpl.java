@@ -2,6 +2,7 @@ package com.example.service.impl;
 
 import com.example.dto.BookDto;
 import com.example.dto.CreateBookRequestDto;
+import com.example.exception.EntityNotFoundException;
 import com.example.mapper.BookMapper;
 import com.example.model.Book;
 import com.example.repository.BookRepository;
@@ -31,7 +32,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto getById(Long id) {
-        Book book = bookRepository.getById(id);
+        Book book = bookRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("DB don't have book with such id = " + id));
         return bookMapper.toDto(book);
     }
 
@@ -42,13 +44,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto updateById(CreateBookRequestDto requestDto, Long id) {
-        Book book = bookRepository.getReferenceById(id);
-        book.setTitle(requestDto.getTitle());
-        book.setAuthor(requestDto.getAuthor());
-        book.setIsbn(requestDto.getIsbn());
-        book.setPrice(requestDto.getPrice());
-        book.setDescription(requestDto.getDescription());
-        book.setCoverImage(requestDto.getCoverImage());
+        Book book = bookRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("DB don't have book with such id = " + id));
+        bookMapper.updateBookFromDto(book, requestDto);
         bookRepository.flush();
         return bookMapper.toDto(book);
     }
