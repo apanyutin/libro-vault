@@ -2,11 +2,11 @@ package com.example.service.impl;
 
 import com.example.dto.BookDto;
 import com.example.dto.CreateBookRequestDto;
+import com.example.exception.EntityNotFoundException;
 import com.example.mapper.BookMapper;
 import com.example.model.Book;
 import com.example.repository.BookRepository;
 import com.example.service.BookService;
-import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,8 +32,22 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto getById(Long id) {
-        Book book = bookRepository.getById(id).orElseThrow(
+        Book book = bookRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("DB don't have book with such id = " + id));
+        return bookMapper.toDto(book);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        bookRepository.deleteById(id);
+    }
+
+    @Override
+    public BookDto updateById(CreateBookRequestDto requestDto, Long id) {
+        Book book = bookRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("DB don't have book with such id = " + id));
+        bookMapper.updateBookFromDto(book, requestDto);
+        bookRepository.flush();
         return bookMapper.toDto(book);
     }
 }
