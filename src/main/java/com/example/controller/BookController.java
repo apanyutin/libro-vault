@@ -46,7 +46,7 @@ public class BookController {
         return bookService.updateById(requestDto, id);
     }
 
-    @GetMapping("/seach")
+    @GetMapping("/search")
     public List<BookDto> search(BookSearchParameters searchParameters) {
         return bookService.search(searchParameters);
     }
