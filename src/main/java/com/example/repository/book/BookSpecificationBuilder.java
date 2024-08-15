@@ -4,14 +4,12 @@ import com.example.dto.BookSearchParameters;
 import com.example.model.Book;
 import com.example.repository.SpecificationBuilder;
 import com.example.repository.SpecificationProviderManager;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@AllArgsConstructor
 public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
     private final SpecificationProviderManager<Book> bookSpecificationProviderManager;
 
@@ -22,11 +20,12 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
                     .getSpecificationProvider("author")
                     .getSpecification(searchParameters.authors()));
         }
-//        if (searchParameters.priceRanges() != null && searchParameters.priceRanges().length > 0) {
-//            specification = specification.and(bookSpecificationProviderManager
-//                    .getSpecificationProvider("price")
-//                    .getSpecification(searchParameters.priceRanges()));
-//        }
+        if (searchParameters.wordsFromTitle() != null
+                && searchParameters.wordsFromTitle().length > 0) {
+            specification = specification.and(bookSpecificationProviderManager
+                    .getSpecificationProvider("title")
+                    .getSpecification(searchParameters.wordsFromTitle()));
+        }
         return specification;
     }
 }
