@@ -15,9 +15,9 @@ import lombok.Setter;
 public class CreateBookRequestDto {
     @NotBlank
     private String title;
-    @NotNull
+    @NotBlank
     private String author;
-    @NotNull
+    @NotBlank
     @Isbn
     private String isbn;
     @NotNull
