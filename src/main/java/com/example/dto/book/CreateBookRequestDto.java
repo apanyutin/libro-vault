@@ -1,4 +1,4 @@
-package com.example.dto;
+package com.example.dto.book;
 
 import com.example.validation.Isbn;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
