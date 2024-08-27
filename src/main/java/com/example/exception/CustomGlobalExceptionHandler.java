@@ -44,7 +44,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             RegistrationException exception,
             WebRequest request) {
         String message = exception.getMessage();
-        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(message, HttpStatus.CONFLICT);
     }
 
     private String getErrorMessage(ObjectError e) {
