@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
     public UserResponseDto getById(Long id) {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("DB doesn't have user with such id = " + id));
-        System.out.println(user.getAuthorities());
         return userMapper.toDto(user);
     }
 
@@ -41,7 +40,6 @@ public class UserServiceImpl implements UserService {
     public UserResponseDto getByEmail(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new EntityNotFoundException("DB doesn't have user with email = " + email));
-        System.out.println(user.getAuthorities());
         return userMapper.toDto(user);
     }
 
