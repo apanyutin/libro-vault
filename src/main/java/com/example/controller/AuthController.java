@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-public class AuthenticationController {
+public class AuthController {
     private final UserService userService;
 
     @Operation(summary = "User registration", description = "New user registration")
@@ -27,6 +27,7 @@ public class AuthenticationController {
         if (!userService.isUserExists(requestDto.getEmail())) {
             return userService.save(requestDto);
         }
+        System.out.println(userService.getByEmail(requestDto.getEmail()));
         throw new RegistrationException("Such email exists in DB");
     }
 }
