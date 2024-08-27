@@ -24,10 +24,6 @@ public class AuthController {
     @PostMapping("/registration")
     public UserResponseDto register(@RequestBody @Valid UserRegistrationRequestDto requestDto)
             throws RegistrationException {
-        if (!userService.isUserExists(requestDto.getEmail())) {
-            return userService.save(requestDto);
-        }
-        System.out.println(userService.getByEmail(requestDto.getEmail()));
-        throw new RegistrationException("Such email exists in DB");
+        return userService.register(requestDto);
     }
 }
