@@ -24,15 +24,14 @@ public class Role implements GrantedAuthority {
     private Long id;
     @Column(nullable = false, unique = true)
     @Enumerated(EnumType.STRING)
-    private RoleName role;
+    private RoleName roleName;
 
     @Override
     public String getAuthority() {
-        System.out.println("roleName=" + role.name());
-        return role.name();
+        return roleName.name();
     }
 
     public enum RoleName {
-        ADMIN, MANAGER, CUSTOMER
+        ROLE_ADMIN, ROLE_MANAGER, ROLE_CUSTOMER
     }
 }
