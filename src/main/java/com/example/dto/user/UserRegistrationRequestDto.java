@@ -17,10 +17,10 @@ public class UserRegistrationRequestDto {
     @Email
     private String email;
     @NotBlank
-    @Length(min = 5, max = 24)
+    @Length(min = 8, max = 24)
     private String password;
     @NotBlank
-    @Length(min = 5, max = 24)
+    @Length(min = 8, max = 24)
     private String repeatPassword;
     @NotBlank
     private String firstName;
