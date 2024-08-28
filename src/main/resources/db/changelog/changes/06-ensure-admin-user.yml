@@ -1,0 +1,38 @@
+databaseChangeLog:
+  - changeSet:
+      id: ensure-admin-user
+      author: Anton
+      preConditions:
+        - and:
+          - sqlCheck:
+              expectedResult: 0
+              sql: SELECT COUNT(*) FROM users u JOIN users_roles ur ON u.id = ur.user_id JOIN roles r ON ur.role_id = r.id WHERE r.role_name = 'ROLE_ADMIN'
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: "admin@email.com"
+              - column:
+                  name: password
+                  value: "$2a$10$gIV9deZb4E80By2j0F3fwOtkcRFRgE8/AIjEbLDKpTUg8uTWGqh9C"  #admin
+              - column:
+                  name: first_name
+                  value: "admin"
+              - column:
+                  name: last_name
+                  value: "admin"
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  valueComputed: "(SELECT id FROM users u WHERE email='admin@email.com')"
+              - column:
+                  name: role_id
+                  valueComputed: "(SELECT id FROM roles WHERE role_name = 'ROLE_ADMIN')"
