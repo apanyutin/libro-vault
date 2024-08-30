@@ -16,7 +16,7 @@ databaseChangeLog:
                   value: "admin@email.com"
               - column:
                   name: password
-                  value: "$2a$10$gIV9deZb4E80By2j0F3fwOtkcRFRgE8/AIjEbLDKpTUg8uTWGqh9C"  #admin
+                  value: "$2a$10$o2yKWo5bzYi3xTb5zXGRRO2fgP62vCJIxUWCFmFm4dgi9ohe2S4FO"  #admin123
               - column:
                   name: first_name
                   value: "admin"
