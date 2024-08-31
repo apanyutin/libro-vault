@@ -1,6 +1,7 @@
 package com.example.service.impl;
 
 import com.example.dto.book.BookDto;
+import com.example.dto.book.BookDtoWithoutCategoryIds;
 import com.example.dto.book.BookSearchParameters;
 import com.example.dto.book.CreateBookRequestDto;
 import com.example.exception.EntityNotFoundException;
@@ -38,7 +39,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto getById(Long id) {
         Book book = bookRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("DB don't have book with such id = " + id));
+                () -> new EntityNotFoundException("DB doesn't have book with id = " + id));
         return bookMapper.toDto(book);
     }
 
@@ -62,5 +63,11 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findAll(bookSpecification, pageable).stream()
                 .map(bookMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public List<BookDtoWithoutCategoryIds> getAllByCategoryId(Long categoryId, Pageable pageable) {
+        List<Book> books = bookRepository.findAllByCategories_Id(categoryId, pageable);
+        return bookMapper.toDtoWithoutCategories(books);
     }
 }
