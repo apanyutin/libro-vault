@@ -1,7 +1,5 @@
 package com.example.dto.cart;
 
-import com.example.model.CartItem;
-import com.example.model.User;
 import jakarta.validation.constraints.NotNull;
 import java.util.Set;
 import lombok.Getter;
@@ -11,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class CreateShoppingCartRequestDto {
     @NotNull
-    private User user;
+    private Long userId;
     @NotNull
-    private Set<CartItem> cartItems;
+    private Set<Long> cartItemIds;
 }
