@@ -1,11 +1,9 @@
 package com.example.controller;
 
-import com.example.dto.cart.CartItemDto;
 import com.example.dto.cart.CreateCartItemRequestDto;
 import com.example.dto.cart.ShoppingCartDto;
 import com.example.dto.cart.UpdateCartItemRequestDto;
 import com.example.model.User;
-import com.example.service.CartItemService;
 import com.example.service.ShoppingCartService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,45 +25,40 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ShoppingCartController {
     private final ShoppingCartService shoppingCartService;
-    private final CartItemService cartItemService;
 
     @Operation(summary = "Get cart", description = "Get cart of user")
     @GetMapping
     public ShoppingCartDto getUserShoppingCart(Authentication authentication) {
-        return shoppingCartService.getShoppingCartByUserId(
-                getUserIdByAuthentication(authentication));
+        Long userId = getUserIdByAuthentication(authentication);
+        return shoppingCartService.getCartByUserId(userId);
     }
 
     @Operation(summary = "Add book to cart", description = "Add book to the shopping cart")
     @PostMapping
-    public CartItemDto addBookToShoppingCart(
+    public ShoppingCartDto addBookToShoppingCart(
             @RequestBody @Valid CreateCartItemRequestDto requestDto,
             Authentication authentication) {
-        requestDto.setShoppingCartId(getShoppingCartIdByAuthentication(authentication));
-        return cartItemService.save(requestDto);
+        Long userId = getUserIdByAuthentication(authentication);
+        return shoppingCartService.addCartItemToCartByUserId(requestDto, userId);
     }
 
     @Operation(summary = "Update book quantity", description = "Update book quantity in cart")
     @PutMapping("/items/{cartItemId}")
-    public CartItemDto updateBookQuantityByCartItemId(
+    public ShoppingCartDto updateBookQuantityByCartItemId(
             @PathVariable Long cartItemId,
-            @RequestBody @Valid UpdateCartItemRequestDto requestDto) {
-        return cartItemService.updateQuantityById(cartItemId, requestDto.getQuantity());
+            @RequestBody @Valid UpdateCartItemRequestDto requestDto,
+            Authentication authentication) {
+        Long userId = getUserIdByAuthentication(authentication);
+        return shoppingCartService.updateCartItemQuantityById(cartItemId, requestDto, userId);
     }
 
     @Operation(summary = "Delete cartItem from cart", description = "Remove a book from cart")
     @DeleteMapping("/items/{cartItemId}")
     public void deleteByCartItemId(@PathVariable Long cartItemId) {
-        cartItemService.deleteById(cartItemId);
+        shoppingCartService.deleteCartItemById(cartItemId);
     }
 
     private Long getUserIdByAuthentication(Authentication authentication) {
         return ((User) authentication.getPrincipal()).getId();
-    }
-
-    private Long getShoppingCartIdByAuthentication(Authentication authentication) {
-        Long userId = ((User) authentication.getPrincipal()).getId();
-        ShoppingCartDto shoppingCartDto = shoppingCartService.getShoppingCartByUserId(userId);
-        return shoppingCartDto.getId();
     }
 }
