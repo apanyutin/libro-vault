@@ -2,7 +2,6 @@ package com.example.security;
 
 import com.example.dto.user.UserLoginRequestDto;
 import com.example.dto.user.UserLoginResponseDto;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
