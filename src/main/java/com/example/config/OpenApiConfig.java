@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class OpenApiConfig {
     private static final String BEARER_AUTH = "BearerAuth";
     private static final String BEARER_SCHEME = "bearer";
-    private static final String BEARER_FORMAT = "JWT";
+    private static final String JWT_FORMAT = "JWT";
 
     @Bean
     public OpenAPI customOpenApi() {
@@ -20,8 +20,7 @@ public class OpenApiConfig {
                         new SecurityScheme()
                                 .type(SecurityScheme.Type.HTTP)
                                 .scheme(BEARER_SCHEME)
-                                .bearerFormat(BEARER_FORMAT)))
+                                .bearerFormat(JWT_FORMAT)))
                 .addSecurityItem(new SecurityRequirement().addList(BEARER_AUTH));
     }
 }
-
