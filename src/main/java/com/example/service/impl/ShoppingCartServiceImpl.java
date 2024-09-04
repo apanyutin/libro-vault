@@ -15,7 +15,6 @@ import com.example.repository.cart.CartItemRepository;
 import com.example.repository.cart.ShoppingCartRepository;
 import com.example.service.ShoppingCartService;
 import jakarta.transaction.Transactional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,11 +32,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId).orElseThrow(
                 () -> new EntityNotFoundException(
                         "Can't find shopping cart by user id = " + userId));
-        ShoppingCartDto shoppingCartDto = shoppingCartMapper.toDto(shoppingCart);
-        shoppingCartDto.setCartItems(shoppingCart.getCartItems().stream()
-                .map(cartItemMapper::toDto)
-                .collect(Collectors.toSet()));
-        return shoppingCartDto;
+        return shoppingCartMapper.toDto(shoppingCart);
     }
 
     @Override
