@@ -5,7 +5,9 @@ import com.example.dto.user.UserResponseDto;
 import com.example.exception.RegistrationException;
 import com.example.mapper.UserMapper;
 import com.example.model.Role;
+import com.example.model.ShoppingCart;
 import com.example.model.User;
+import com.example.repository.cart.ShoppingCartRepository;
 import com.example.repository.role.RoleRepository;
 import com.example.repository.user.UserRepository;
 import com.example.service.UserService;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final ShoppingCartRepository shoppingCartRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private Role userRole;
@@ -39,6 +42,12 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.toModel(requestDto);
         user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         user.setRoles(Set.of(userRole));
-        return userMapper.toDto(userRepository.save(user));
+        user = userRepository.save(user);
+
+        ShoppingCart userShoppingCart = new ShoppingCart();
+        userShoppingCart.setUser(user);
+        shoppingCartRepository.save(userShoppingCart);
+
+        return userMapper.toDto(user);
     }
 }
