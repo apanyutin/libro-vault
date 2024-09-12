@@ -10,6 +10,7 @@ import com.example.mapper.impl.CategoryMapperImpl;
 import com.example.model.Category;
 import com.example.repository.category.CategoryRepository;
 import com.example.service.impl.CategoryServiceImpl;
+import com.example.util.TestUtils;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
@@ -32,24 +33,14 @@ class CategoryServiceTest {
     @InjectMocks
     private CategoryServiceImpl categoryService;
     private final CategoryMapper categoryMapper = new CategoryMapperImpl();
-    private final Category category = new Category();
-    private final CategoryDto expectedCategoryDto = new CategoryDto();
-    private final CreateCategoryRequestDto categoryRequestDto = new CreateCategoryRequestDto();
+    private final Category category = TestUtils.getFirstCategory();
+    private final CategoryDto expectedCategoryDto = TestUtils.getFirstCategoryDto();
+    private final CreateCategoryRequestDto categoryRequestDto = TestUtils
+            .getFirstCategoryRequestDto();
 
     @BeforeEach
     void setUp() {
         categoryService = new CategoryServiceImpl(categoryMapper, categoryRepository);
-
-        category.setId(1L);
-        category.setName("Category name");
-        category.setDescription("Category description");
-
-        expectedCategoryDto.setId(1L);
-        expectedCategoryDto.setName("Category name");
-        expectedCategoryDto.setDescription("Category description");
-
-        categoryRequestDto.setName("Category name");
-        categoryRequestDto.setDescription("Category description");
     }
 
     @DisplayName("Verify the correct list of CategoryDto is returned when get all categories")

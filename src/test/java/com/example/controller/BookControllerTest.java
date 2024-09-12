@@ -10,15 +10,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.example.dto.book.BookDto;
 import com.example.dto.book.CreateBookRequestDto;
-import com.example.model.Category;
+import com.example.util.TestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +33,11 @@ class BookControllerTest {
     protected static MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
-    private final CreateBookRequestDto bookRequestDto = new CreateBookRequestDto();
-    private final BookDto expectedBookDto = new BookDto();
-    private final BookDto firstBookDto = new BookDto();
-    private final BookDto secondBookDto = new BookDto();
-    private final BookDto thirdBookDto = new BookDto();
+    private final CreateBookRequestDto bookRequestDto = TestUtils.getFirstBookRequestDto();
+    private final BookDto expectedBookDto = TestUtils.getFirstBookDto();
+    private final BookDto firstBookDto = TestUtils.getFirstBookDto();
+    private final BookDto secondBookDto = TestUtils.getSecondBookDto();
+    private final BookDto thirdBookDto = TestUtils.getThirdBookDto();
 
     @BeforeAll
     static void beforeAll(@Autowired WebApplicationContext applicationContext) {
@@ -48,66 +45,6 @@ class BookControllerTest {
                 .webAppContextSetup(applicationContext)
                 .apply(springSecurity())
                 .build();
-    }
-
-    @BeforeEach
-    void setUp() {
-        bookRequestDto.setTitle("Book Title");
-        bookRequestDto.setPrice(BigDecimal.valueOf(102.99));
-        bookRequestDto.setIsbn("978-9-866-21156-9");
-        bookRequestDto.setAuthor("Book Author");
-        bookRequestDto.setDescription("Book Description");
-        bookRequestDto.setCoverImage("Cover image of book");
-        bookRequestDto.setCategoryIds(Set.of(3L));
-
-        expectedBookDto.setId(1L);
-        expectedBookDto.setTitle(bookRequestDto.getTitle());
-        expectedBookDto.setPrice(bookRequestDto.getPrice());
-        expectedBookDto.setIsbn(bookRequestDto.getIsbn());
-        expectedBookDto.setAuthor(bookRequestDto.getAuthor());
-        expectedBookDto.setDescription(bookRequestDto.getDescription());
-        expectedBookDto.setCoverImage(bookRequestDto.getCoverImage());
-        expectedBookDto.setCategoryIds(bookRequestDto.getCategoryIds());
-
-        //This setUp is used with file: database/01-add-three-books-with-categories-to-DB.sql
-        Category firstCategory = new Category();
-        firstCategory.setName("First category name");
-        firstCategory.setId(1L);
-
-        Category secondCategory = new Category();
-        secondCategory.setName("Second category Name");
-        secondCategory.setId(2L);
-
-        Category thirdCategory = new Category();
-        thirdCategory.setName("Third category Name");
-        thirdCategory.setId(3L);
-
-        firstBookDto.setId(1L);
-        firstBookDto.setTitle("First book Title");
-        firstBookDto.setPrice(BigDecimal.valueOf(102.99));
-        firstBookDto.setIsbn("978-9-166-21156-9");
-        firstBookDto.setAuthor("First book Author");
-        firstBookDto.setDescription("First book Description");
-        firstBookDto.setCoverImage("Cover image of first book");
-        firstBookDto.setCategoryIds(Set.of(firstCategory.getId()));
-
-        secondBookDto.setId(2L);
-        secondBookDto.setTitle("Second book Title");
-        secondBookDto.setPrice(BigDecimal.valueOf(922.55));
-        secondBookDto.setIsbn("978-9-266-21156-9");
-        secondBookDto.setAuthor("Second book Author");
-        secondBookDto.setDescription("Second book Description");
-        secondBookDto.setCoverImage("Cover image of second book");
-        secondBookDto.setCategoryIds(Set.of(firstCategory.getId(), secondCategory.getId()));
-
-        thirdBookDto.setId(3L);
-        thirdBookDto.setTitle("Third book Title");
-        thirdBookDto.setPrice(BigDecimal.valueOf(12.05));
-        thirdBookDto.setIsbn("978-9-366-21156-9");
-        thirdBookDto.setAuthor("Third book Author");
-        thirdBookDto.setDescription("Third book Description");
-        thirdBookDto.setCoverImage("Cover image of third book");
-        thirdBookDto.setCategoryIds(Set.of(firstCategory.getId(), thirdCategory.getId()));
     }
 
     @Sql(scripts = "classpath:database/01-add-three-books-with-categories-to-DB.sql",
@@ -179,6 +116,8 @@ class BookControllerTest {
     }
 
     @DisplayName("Verify the correct bookDto is returned when create book")
+    @Sql(scripts = "classpath:database/02-delete-all-books-and-categories-from-DB.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "admin", roles = "ADMIN")
     @Test
     void createBook_WithValidRequestDto_Success() throws Exception {
@@ -236,7 +175,13 @@ class BookControllerTest {
     @WithMockUser(username = "admin", roles = "ADMIN")
     @Test
     void updateBook() throws Exception {
-        String jsonRequest = objectMapper.writeValueAsString(bookRequestDto);
+        CreateBookRequestDto updateBookRequestDto = bookRequestDto;
+        updateBookRequestDto.setTitle("Update book Title");
+        updateBookRequestDto.setIsbn("978-9-866-21156-9");
+        String jsonRequest = objectMapper.writeValueAsString(updateBookRequestDto);
+        BookDto expected = expectedBookDto;
+        expectedBookDto.setTitle(updateBookRequestDto.getTitle());
+        expectedBookDto.setIsbn(updateBookRequestDto.getIsbn());
 
         MvcResult result = mockMvc.perform(
                         put("/books/3")
@@ -246,9 +191,9 @@ class BookControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        BookDto actualBookDto = objectMapper.readValue(
+        BookDto actual = objectMapper.readValue(
                 result.getResponse().getContentAsString(), BookDto.class);
-        assertThat(actualBookDto).usingRecursiveComparison()
-                .ignoringFields("id").isEqualTo(expectedBookDto);
+        assertThat(actual).usingRecursiveComparison()
+                .ignoringFields("id").isEqualTo(expected);
     }
 }

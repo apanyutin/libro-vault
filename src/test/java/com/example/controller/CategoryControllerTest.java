@@ -12,14 +12,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.example.dto.book.BookDto;
 import com.example.dto.category.CategoryDto;
 import com.example.dto.category.CreateCategoryRequestDto;
+import com.example.util.TestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +35,10 @@ class CategoryControllerTest {
     protected static MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
-    private final BookDto firstBookDto = new BookDto();
-    private final BookDto secondBookDto = new BookDto();
-    private final BookDto thirdBookDto = new BookDto();
-    private final CategoryDto firstCategoryDto = new CategoryDto();
-    private final CategoryDto secondCategoryDto = new CategoryDto();
-    private final CategoryDto thirdCategoryDto = new CategoryDto();
+    private final BookDto secondBookDto = TestUtils.getSecondBookDto();
+    private final CategoryDto firstCategoryDto = TestUtils.getFirstCategoryDto();
+    private final CategoryDto secondCategoryDto = TestUtils.getSecondCategoryDto();
+    private final CategoryDto thirdCategoryDto = TestUtils.getThirdCategoryDto();
 
     @BeforeAll
     static void beforeAll(
@@ -52,46 +48,6 @@ class CategoryControllerTest {
                 .webAppContextSetup(applicationContext)
                 .apply(springSecurity())
                 .build();
-    }
-
-    @BeforeEach
-    void setUp() {
-        //This setUp is used with file: database/01-add-three-books-with-categories-to-DB.sql
-        firstCategoryDto.setName("First category name");
-        firstCategoryDto.setId(1L);
-
-        secondCategoryDto.setName("Second category name");
-        secondCategoryDto.setId(2L);
-
-        thirdCategoryDto.setName("Third category name");
-        thirdCategoryDto.setId(3L);
-
-        firstBookDto.setId(1L);
-        firstBookDto.setTitle("First book Title");
-        firstBookDto.setPrice(BigDecimal.valueOf(102.99));
-        firstBookDto.setIsbn("978-9-166-21156-9");
-        firstBookDto.setAuthor("First book Author");
-        firstBookDto.setDescription("First book Description");
-        firstBookDto.setCoverImage("Cover image of first book");
-        firstBookDto.setCategoryIds(Set.of(firstCategoryDto.getId()));
-
-        secondBookDto.setId(2L);
-        secondBookDto.setTitle("Second book Title");
-        secondBookDto.setPrice(BigDecimal.valueOf(922.55));
-        secondBookDto.setIsbn("978-9-266-21156-9");
-        secondBookDto.setAuthor("Second book Author");
-        secondBookDto.setDescription("Second book Description");
-        secondBookDto.setCoverImage("Cover image of second book");
-        secondBookDto.setCategoryIds(Set.of(firstCategoryDto.getId(), secondCategoryDto.getId()));
-
-        thirdBookDto.setId(3L);
-        thirdBookDto.setTitle("Third book Title");
-        thirdBookDto.setPrice(BigDecimal.valueOf(12.05));
-        thirdBookDto.setIsbn("978-9-366-21156-9");
-        thirdBookDto.setAuthor("Third book Author");
-        thirdBookDto.setDescription("Third book Description");
-        thirdBookDto.setCoverImage("Cover image of third book");
-        thirdBookDto.setCategoryIds(Set.of(firstCategoryDto.getId(), thirdCategoryDto.getId()));
     }
 
     @Test
@@ -146,8 +102,7 @@ class CategoryControllerTest {
     @Sql(scripts = "classpath:database/02-delete-all-books-and-categories-from-DB.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void createCategory_ValidRequestDto_Success() throws Exception {
-        CreateCategoryRequestDto requestDto = new CreateCategoryRequestDto();
-        requestDto.setName("First category name");
+        CreateCategoryRequestDto requestDto = TestUtils.getFirstCategoryRequestDto();
         CategoryDto expected = firstCategoryDto;
         String jsonRequest = objectMapper.writeValueAsString(requestDto);
 
@@ -174,8 +129,7 @@ class CategoryControllerTest {
     @Sql(scripts = "classpath:database/02-delete-all-books-and-categories-from-DB.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void updateCategory_ValidRequestDto_Success() throws Exception {
-        //Given
-        CreateCategoryRequestDto updateRequestDto = new CreateCategoryRequestDto();
+        CreateCategoryRequestDto updateRequestDto = TestUtils.getFirstCategoryRequestDto();
         updateRequestDto.setName("Update category name");
         CategoryDto expected = firstCategoryDto;
         expected.setName("Update category name");

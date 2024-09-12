@@ -11,15 +11,13 @@ import com.example.exception.EntityNotFoundException;
 import com.example.mapper.BookMapper;
 import com.example.mapper.impl.BookMapperImpl;
 import com.example.model.Book;
-import com.example.model.Category;
 import com.example.repository.book.BookRepository;
 import com.example.repository.book.BookSpecificationBuilder;
 import com.example.service.impl.BookServiceImpl;
-import java.math.BigDecimal;
+import com.example.util.TestUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,42 +42,13 @@ class BookServiceTest {
     @InjectMocks
     private BookServiceImpl bookService;
     private final BookMapper bookMapper = new BookMapperImpl();
-    private final Book book = new Book();
-    private final BookDto expectedBookDto = new BookDto();
-    private final CreateBookRequestDto bookRequestDto = new CreateBookRequestDto();
+    private final Book book = TestUtils.getFirstBook();
+    private final BookDto expectedBookDto = TestUtils.getFirstBookDto();
+    private final CreateBookRequestDto bookRequestDto = TestUtils.getFirstBookRequestDto();
 
     @BeforeEach
     void setUp() {
         bookService = new BookServiceImpl(bookRepository, bookMapper, bookSpecificationBuilder);
-
-        book.setId(1L);
-        book.setTitle("Book Title");
-        book.setPrice(BigDecimal.valueOf(102.99));
-        book.setIsbn("978-9-866-21156-9");
-        book.setAuthor("Book Author");
-        book.setDescription("Book Description");
-        book.setCoverImage("COver image of book");
-        Category category = new Category();
-        category.setName("Category name");
-        category.setId(3L);
-        book.setCategories(Set.of(category));
-
-        expectedBookDto.setId(1L);
-        expectedBookDto.setTitle("Book Title");
-        expectedBookDto.setPrice(BigDecimal.valueOf(102.99));
-        expectedBookDto.setIsbn("978-9-866-21156-9");
-        expectedBookDto.setAuthor("Book Author");
-        expectedBookDto.setDescription("Book Description");
-        expectedBookDto.setCoverImage("COver image of book");
-        expectedBookDto.setCategoryIds(Set.of(3L));
-
-        bookRequestDto.setTitle("Book Title");
-        bookRequestDto.setPrice(BigDecimal.valueOf(102.99));
-        bookRequestDto.setIsbn("978-9-866-21156-9");
-        bookRequestDto.setAuthor("Book Author");
-        bookRequestDto.setDescription("Book Description");
-        bookRequestDto.setCoverImage("COver image of book");
-        bookRequestDto.setCategoryIds(Set.of(3L));
     }
 
     @DisplayName("Verify the correct BookDto is returned when correct Book ia saved")
@@ -159,13 +128,13 @@ class BookServiceTest {
     @Test
     void getAllBookByCategoryId_WithValidId_ReturnsCorrectBookList() {
         BookDtoWithoutCategoryIds bookDtoWithoutCategoryIds = new BookDtoWithoutCategoryIds();
-        bookDtoWithoutCategoryIds.setTitle("Book Title");
-        bookDtoWithoutCategoryIds.setPrice(BigDecimal.valueOf(102.99));
-        bookDtoWithoutCategoryIds.setIsbn("978-9-866-21156-9");
-        bookDtoWithoutCategoryIds.setAuthor("Book Author");
-        bookDtoWithoutCategoryIds.setDescription("Book Description");
-        bookDtoWithoutCategoryIds.setCoverImage("COver image of book");
-        bookDtoWithoutCategoryIds.setId(1L);
+        bookDtoWithoutCategoryIds.setTitle(expectedBookDto.getTitle());
+        bookDtoWithoutCategoryIds.setPrice(expectedBookDto.getPrice());
+        bookDtoWithoutCategoryIds.setIsbn(expectedBookDto.getIsbn());
+        bookDtoWithoutCategoryIds.setAuthor(expectedBookDto.getAuthor());
+        bookDtoWithoutCategoryIds.setDescription(expectedBookDto.getDescription());
+        bookDtoWithoutCategoryIds.setCoverImage(expectedBookDto.getCoverImage());
+        bookDtoWithoutCategoryIds.setId(expectedBookDto.getId());
         List<Book> books = List.of(book);
         Long categoryId = book.getCategories().stream()
                 .findFirst()
