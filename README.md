@@ -1,16 +1,17 @@
 # 📚 Bookstore API
 
-Welcome to the **Bookstore API**, a backend service for managing users, books, categories, shopping carts, and orders in an online bookstore. This project is built with **Spring Boot**, utilizing modern Java technologies and practices to deliver a scalable, secure, and efficient solution for managing an e-commerce bookstore.
+Welcome to the Bookstore API, a backend service for managing users, books, categories, shopping carts, and orders in an online bookstore. This project is built with Spring Boot, utilizing modern Java technologies and practices to deliver a scalable, secure, and efficient solution for managing an e-commerce bookstore.  
+**🌐 Live Demo**: [Bookstore API on AWS](http://ec2-3-72-10-51.eu-central-1.compute.amazonaws.com/api/swagger-ui/index.html)
 
 ## Table of Contents
-- [Introduction](#introduction)
-- [Features](#features)
-- [Technologies](#technologies)
-- [API Endpoints](#api-endpoints)
-- [Setup](#setup)
-- [Challenges and Solutions](#challenges-and-solutions)
-- [Postman Collection](#postman-collection)
-- [Conclusion](#conclusion)
+- [Introduction](#-introduction)
+- [Features](#-features)
+- [Technologies](#%EF%B8%8F-technologies)
+- [API Endpoints](#-api-endpoints)
+- [Setup](#-setup)
+- [Challenges and Solutions](#-challenges-and-solutions)
+- [Postman Collection](#-postman-collection)
+- [Conclusion](#-conclusion)
 
 ## 🚀 Introduction
 
