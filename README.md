@@ -6,7 +6,7 @@ Welcome to the Bookstore API, a backend service for managing users, books, categ
 ## Table of Contents
 - [Introduction](#-introduction)
 - [Features](#-features)
-- [Technologies](#-technologies)
+- [Technologies](#%EF%B8%8F-technologies)
 - [API Endpoints](#-api-endpoints)
 - [Setup](#-setup)
 - [Challenges and Solutions](#-challenges-and-solutions)
