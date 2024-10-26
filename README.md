@@ -1,7 +1,7 @@
-# 📚 Bookstore API
+# 📚 LibroVault API
 
-Welcome to the Bookstore API, a backend service for managing users, books, categories, shopping carts, and orders in an online bookstore. This project is built with Spring Boot, utilizing modern Java technologies and practices to deliver a scalable, secure, and efficient solution for managing an e-commerce bookstore.  
-**🌐 Live Demo**: [Bookstore API on AWS](http://ec2-3-72-10-51.eu-central-1.compute.amazonaws.com/api/swagger-ui/index.html)
+Welcome to the LibroVault API, a backend service for managing users, books, categories, shopping carts, and orders in an online bookstore. This project is built with Spring Boot, utilizing modern Java technologies and practices to deliver a scalable, secure, and efficient solution for managing an e-commerce bookstore.  
+**🌐 Live Demo**: [LibroVault API on AWS](http://ec2-3-72-10-51.eu-central-1.compute.amazonaws.com/api/swagger-ui/index.html)
 
 ## Table of Contents
 - [Introduction](#-introduction)
@@ -15,7 +15,7 @@ Welcome to the Bookstore API, a backend service for managing users, books, categ
 
 ## 🚀 Introduction
 
-The Bookstore API was created to simplify the process of managing books and orders for both users and administrators. It supports essential functionalities for an online bookstore, including user registration, book browsing, shopping cart management, and order processing. The application also provides admin-level access to manage books and categories.
+The LibroVault API was created to simplify the process of managing books and orders for both users and administrators. It supports essential functionalities for an online bookstore, including user registration, book browsing, shopping cart management, and order processing. The application also provides admin-level access to manage books and categories.
 
 ## 🌟 Features
 
@@ -40,7 +40,7 @@ The Bookstore API was created to simplify the process of managing books and orde
 
 ## 🛠️ Technologies
 
-The Bookshop API leverages a number of modern Java technologies:
+The LibroVault API leverages a number of modern Java technologies:
 - **Spring Boot**: Core framework for building REST APIs.
 - **Spring MVC**: Facilitates building web applications and RESTful APIs using the MVC pattern.
 - **Spring Security**: Secures the application with JWT-based authentication.
@@ -93,8 +93,8 @@ The Bookshop API leverages a number of modern Java technologies:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/apanyutin/book-store.git
-   cd bookstore-api
+   git clone https://github.com/apanyutin/libro-vault.git
+   cd libro-vault
    ```
 
 2. **Set up MySQL**:
@@ -120,7 +120,7 @@ The Bookshop API leverages a number of modern Java technologies:
 
 1. Build the Docker image:
    ```bash
-   docker build -t bookstore-api .
+   docker build -t libro-vault .
    ```
 
 2. Run the application:
@@ -146,6 +146,6 @@ You can test the API endpoints using Postman. A collection of the requests is pr
 
 ## 📎 Conclusion
 
-The Bookstore API provides a robust and secure foundation for managing users, books, categories, and orders in an online bookstore environment. With modern technologies like Spring Boot, Spring MVC, Spring Security, and Spring Data JPA, it is designed for scalability and maintainability.
+The LibroVault API provides a robust and secure foundation for managing users, books, categories, and orders in an online bookstore environment. With modern technologies like Spring Boot, Spring MVC, Spring Security, and Spring Data JPA, it is designed for scalability and maintainability.
 
 Feel free to clone, modify, and experiment with the code for your own projects. Happy coding!
